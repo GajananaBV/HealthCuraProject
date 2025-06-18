@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Rel_1.0_Suite]" guice-stage="DEVELOPMENT">
+  <test thread-count="5" name="Functional_Test(failed)">
+    <classes>
+      <class name="tests.LoginTest">
+        <methods>
+          <include name="launchURL"/>
+          <include name="TC_01_Login_WithValidCredentials_Should_NavigateTo_Appointment"/>
+          <include name="CloseBrowser"/>
+          <include name="TC_02_Login_WithInvalidCredentials_ShouldShowErrorMessage"/>
+        </methods>
+      </class> <!-- tests.LoginTest -->
+      <class name="tests.AppointmentBookingTest">
+        <methods>
+          <include name="TC03_BookAppointment_WithValidDetails_ShouldShowConfirmation"/>
+        </methods>
+      </class> <!-- tests.AppointmentBookingTest -->
+    </classes>
+  </test> <!-- Functional_Test(failed) -->
+</suite> <!-- Failed suite [Rel_1.0_Suite] -->
