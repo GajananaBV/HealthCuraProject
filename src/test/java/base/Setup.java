@@ -28,42 +28,33 @@ public class Setup
 	protected String InvalidUsername;
 	protected String InvalidPassword ;
 	
-	@BeforeMethod(alwaysRun=true)
-	public LoginPage launchURL()
-	{
-		
-		String Browser = ConfigureReaderFile.getProperty("browser");
-		
-		if(Browser.equalsIgnoreCase("chrome"))
-		{
-			WebDriverManager.chromedriver().setup();
-			 driver=new ChromeDriver();
-			
-		}
-		else if(Browser.equalsIgnoreCase("Edge"))
-		{
-			WebDriverManager.edgedriver().setup();
-			 driver=new EdgeDriver();
-			
-		}	
-		else
-		{
-			System.out.println("Browser not supported");
-		}
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-		driver.manage().window().maximize();
-		driver.get(ConfigureReaderFile.getProperty("baseURL"));
-		HomePage home=new HomePage(driver);
-		home.makePointButton();
-		 login=new LoginPage(driver);
-		 username = ConfigureReaderFile.getProperty("username");
-		 password = ConfigureReaderFile.getProperty("password");
-		  InvalidUsername = ConfigureReaderFile.getProperty("InvalidUsername");
-		InvalidPassword = ConfigureReaderFile.getProperty("InvalidPassword");
-		 
-		return login;
+	@BeforeMethod(alwaysRun = true)
+	public void setup() {
+	    String browser = ConfigureReaderFile.getProperty("browser");
+
+	    if (browser.equalsIgnoreCase("chrome")) {
+	        WebDriverManager.chromedriver().setup();
+	        driver = new ChromeDriver();
+	    } else if (browser.equalsIgnoreCase("edge")) {
+	        WebDriverManager.edgedriver().setup();
+	        driver = new EdgeDriver();
+	    } else {
+	        System.out.println("Browser not supported");
+	    }
+
+	    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+	    driver.manage().window().maximize();
+	    driver.get(ConfigureReaderFile.getProperty("baseURL"));
+
+	    HomePage home = new HomePage(driver);
+	    home.makePointButton();
+
+	    login = new LoginPage(driver);
+	    username = ConfigureReaderFile.getProperty("username");
+	    password = ConfigureReaderFile.getProperty("password");
+	    InvalidUsername = ConfigureReaderFile.getProperty("InvalidUsername");
+	    InvalidPassword = ConfigureReaderFile.getProperty("InvalidPassword");
 	}
-	
 	public String TakeScreenShott(String TCName,WebDriver driver) throws IOException
 	{
 		TakesScreenshot SS = (TakesScreenshot)driver;
@@ -72,18 +63,12 @@ public class Setup
 		FileUtils.copyFile(Source,  file);
 		return System.getProperty("user.dir")+"//reports//"+TCName+".png";
 	}
-	
-	@AfterMethod(alwaysRun=true)
-	public void CloseBrowser()
-	{
-		driver.close();
+	@AfterMethod(alwaysRun = true)
+	public void tearDown() {
+	    if (driver != null) {
+	        driver.quit(); // Better than close() to fully shut down
+	    }
 	}
-	
-	
-	
-	
-	
-	
 	
 	
 }

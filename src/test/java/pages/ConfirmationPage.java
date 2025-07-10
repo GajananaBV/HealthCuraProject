@@ -1,6 +1,9 @@
 package pages;
 
 import java.time.Duration;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -19,21 +22,24 @@ public ConfirmationPage (WebDriver driver)
 PageFactory.initElements(driver, this);
 }
 
-@FindBy( xpath="//h2[text()='Appointment Confirmation']")
-WebElement isDislyedConfirmation;
-
-@FindBy( xpath="//p[text()='Please be informed that your appointment has been booked as following:']")
-WebElement ConfirmationMasg;
 
 @FindBy( xpath="//a[text()='Go to Homepage']")
 WebElement goToHomepage;
 
 
 public boolean isConfirmationDisplayed() {
-	WebDriverWait waitHeader = new WebDriverWait(driver, Duration.ofSeconds(20));
-    waitHeader.until(ExpectedConditions.visibilityOf(isDislyedConfirmation));
-    return isDislyedConfirmation.isDisplayed();
+    try {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement confirmationHeader = wait.until(
+            ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[text()='Appointment Confirmation']"))
+        );
+        return confirmationHeader.isDisplayed();
+    } catch (TimeoutException | NoSuchElementException e) {
+        System.out.println("Confirmation not displayed (expected for negative test): " + e.getMessage());
+        return false;
+    }
 }
+
 
 public void goToHomepage()
 {

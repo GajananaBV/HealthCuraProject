@@ -6,14 +6,28 @@
   </listeners>
   <test thread-count="5" name="Test(failed)">
     <classes>
+      <class name="tests.AppointmentNegativeTest">
+        <methods>
+          <include name="setup"/>
+          <include name="tearDown"/>
+          <include name="TC_05_AppointmentWithoutDate_ShouldNotProceed"/>
+        </methods>
+      </class> <!-- tests.AppointmentNegativeTest -->
       <class name="tests.Functional_Appointment_TC">
         <methods>
-          <include name="launchURL"/>
+          <include name="setup"/>
+          <include name="tearDown"/>
           <include name="TC00_VerifyLoginRedirectsToAppointmentPage"/>
-          <include name="CloseBrowser"/>
           <include name="loginToApp"/>
         </methods>
       </class> <!-- tests.Functional_Appointment_TC -->
+      <class name="tests.LogoutTest">
+        <methods>
+          <include name="setup"/>
+          <include name="tearDown"/>
+          <include name="TC_04_Logout_ShouldRedirectToHomePage"/>
+        </methods>
+      </class> <!-- tests.LogoutTest -->
     </classes>
   </test> <!-- Test(failed) -->
 </suite> <!-- Failed suite [Suite] -->

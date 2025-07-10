@@ -1,6 +1,7 @@
 package pages;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import java.time.Duration;
 import org.openqa.selenium.By;
@@ -40,22 +41,29 @@ public class AppointmentPage extends Explicit_waits {
     @FindBy(id = "btn-book-appointment")
     WebElement BookAppoinment;
 
-    @FindBy(xpath="//h2[text()='Appointment Confirmation']") 
-    WebElement appointmentHeader;
-
-    public boolean isAppointmentPageDisplayed() throws InterruptedException {
-        
+    @FindBy(xpath = "//section[@id='appointment']")
+    WebElement appointmentSection;
+    
+    
+    
+    public boolean isAppointmentPageDisplayed() {
         try {
-        	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        	wait.until(ExpectedConditions.visibilityOfElementLocated((By) appointmentHeader));
-
-            //WebDriverWait waitHeader = new WebDriverWait(driver, Duration.ofSeconds(5));
-            //waitHeader.until(ExpectedConditions.visibilityOf(appointmentHeader));
-            return appointmentHeader.isDisplayed();
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.visibilityOf(appointmentSection));
+            return appointmentSection.isDisplayed();
         } catch (Exception e) {
-            System.out.println("Appointment header not found: " + e.getMessage());
+            System.out.println("Appointment page not visible: " + e.getMessage());
             return false;
         }
+    }
+    public HomePage logout() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        // Always re-locate the element before clicking to avoid stale references
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("menu-toggle"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.linkText("Logout"))).click();
+
+        return new HomePage(driver);
     }
 
     public ConfirmationPage bookAppointment(String facilityValue, String programOption, String visitDate,
@@ -107,4 +115,52 @@ public class AppointmentPage extends Explicit_waits {
             throw e;
         }
     }
+    
+    //New Method: Return dropdown options for Healthcare Facility
+    public List<String> getFacilityDropdownOptions() {
+        Select dropdown = new Select(facility);
+        return dropdown.getOptions().stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+    }
+ // Book Appointment without entering date (Negative scenario)
+    public ConfirmationPage bookAppointmentWithoutDate(String facilityValue, String programOption, String visitDate,
+            String commentText) {
+        try {
+            Select facilityDropdown = new Select(facility);
+            facilityDropdown.selectByVisibleText(facilityValue);
+
+            waitAppearElement(applyForHospitalReadmission);
+            applyForHospitalReadmission.click();
+
+            waitAppearElement(healthcareProgramOptions.get(0));
+            switch (programOption.toLowerCase()) {
+                case "medicare":
+                    healthcareProgramOptions.get(0).click();
+                    break;
+                case "medicaid":
+                    healthcareProgramOptions.get(1).click();
+                    break;
+                case "none":
+                    healthcareProgramOptions.get(2).click();
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid program option: " + programOption);
+            }
+
+            // Skipping the date intentionally
+            waitAppearElement(comment);
+            comment.clear();
+            comment.sendKeys(commentText);
+
+            waitAppearElement(BookAppoinment);
+            BookAppoinment.click();
+
+            return new ConfirmationPage(driver);
+        } catch (Exception e) {
+            System.out.println("Error booking appointment without date: " + e.getMessage());
+            throw e;
+        }
+    }
+
 }

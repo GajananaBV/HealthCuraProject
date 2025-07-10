@@ -5,7 +5,6 @@ import org.testng.annotations.Test;
 
 import base.Setup;
 import java.io.IOException;
-import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import pages.AppointmentPage;
 import pages.ConfirmationPage;
@@ -14,7 +13,6 @@ public class Functional_Appointment_TC extends Setup {
 	
 	
 	
-	protected WebDriver driver;
 
 	
 	  private AppointmentPage appointmentPage;
@@ -22,14 +20,14 @@ public class Functional_Appointment_TC extends Setup {
 	    
 	    @BeforeMethod
 	    public void loginToApp() throws IOException {
-	        appointmentPage = login.login_CURA(username, password);
+	    	appointmentPage = login.login_CURA(username, password);
+
 	    }
 	    
 	    @Test(priority = 1)
 	    public void TC00_VerifyLoginRedirectsToAppointmentPage() throws InterruptedException {
-	        //Assert.assertTrue(appointmentPage.isAppointmentPageDisplayed());
+	        
 	        Assert.assertTrue(appointmentPage.isAppointmentPageDisplayed(), "Appointment page is not displayed");
-
 	    }
 	  
 	    @Test(priority = 2)
@@ -45,5 +43,7 @@ public class Functional_Appointment_TC extends Setup {
 	 
 	
 	    }}
+
+
 
 

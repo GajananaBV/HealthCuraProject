@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -16,8 +17,13 @@ public class HomePage extends Explicit_waits {
 	
 	@FindBy(id="btn-make-appointment")
 	WebElement makeappointment;
-	
-	
+	 private By homePageHeader = By.xpath("//h1[contains(text(),'CURA Healthcare')]");
+	 
+	 
+	 
+	  public boolean isHomePageDisplayed() {
+	        return driver.findElement(homePageHeader).isDisplayed();
+	    }
 	
 	public void makePointButton()
 	{

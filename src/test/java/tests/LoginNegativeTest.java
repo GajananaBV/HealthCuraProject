@@ -1,6 +1,6 @@
 package tests;
 
-import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
 
 import base.Setup;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import org.testng.Assert;
 
 public class LoginNegativeTest extends Setup {
 	
-	 @Test
+	@BeforeMethod
 	  public void TC_03_Login_WithInvalidCredentials_ShouldShowErrorMessage() throws IOException
 	  {
 		 

@@ -6,11 +6,18 @@
       <class name="tests.Functional_Appointment_TC">
         <methods>
           <include name="launchURL"/>
-          <include name="CloseBrowser"/>
           <include name="TC00_VerifyLoginRedirectsToAppointmentPage"/>
+          <include name="CloseBrowser"/>
           <include name="loginToApp"/>
         </methods>
       </class> <!-- tests.Functional_Appointment_TC -->
+      <class name="tests.AppointmentNegativeTest">
+        <methods>
+          <include name="launchURL"/>
+          <include name="CloseBrowser"/>
+          <include name="TC_05_AppointmentWithoutDate_ShouldNotProceed"/>
+        </methods>
+      </class> <!-- tests.AppointmentNegativeTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
